@@ -174,7 +174,12 @@ next.onclick=()=>{if(!validatePage())return;if(current===4){
  applicationReference='GAA-'+Date.now().toString().slice(-8);
  document.getElementById('ref').textContent=applicationReference;
  next.disabled=true; next.textContent='Submitting…';
- sendApplicationEmail().then(()=>{current=5;update();next.disabled=false;}).catch(()=>{next.disabled=false;next.textContent='Submit Application →';alert('The application could not be submitted automatically. Please try again.');});
+ sendApplicationEmail().then(()=>{current=5;update();next.disabled=false;next.textContent='Submit Application →';}).catch((err)=>{
+  console.error('Global Academic Access — EmailJS submission failed:', err);
+  next.disabled=false;
+  next.textContent='Submit Application →';
+  alert('The application could not be submitted automatically. Please try again.');
+});
  }else current++;update()};
 back.onclick=()=>{if(current>0){current--;update()}};
 form.addEventListener('input',()=>{if(current>0&&current<5)status.textContent='In Progress'});
